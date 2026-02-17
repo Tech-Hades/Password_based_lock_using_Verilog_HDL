@@ -1,0 +1,47 @@
+module tb_password_lock;
+
+    reg clk;
+    reg reset;
+    reg enter;
+    reg [3:0] key_in;
+    wire unlock;
+    wire alarm;
+
+    password_lock uut (
+        .clk(clk),
+        .reset(reset),
+        .enter(enter),
+        .key_in(key_in),
+        .unlock(unlock),
+        .alarm(alarm)
+    );
+
+    always #5 clk = ~clk;
+
+    initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars(0, tb_password_lock);
+
+        clk = 0;
+        reset = 1;
+        enter = 0;
+        key_in = 0;
+
+        #10 reset = 0;
+
+        #10 key_in = 4'd1; enter = 1;
+        #10 enter = 0;
+
+        #10 key_in = 4'd2; enter = 1;
+        #10 enter = 0;
+
+        #10 key_in = 4'd3; enter = 1;
+        #10 enter = 0;
+
+        #10 key_in = 4'd4; enter = 1;
+        #10 enter = 0;
+
+        #50 $finish;
+    end
+
+endmodule
